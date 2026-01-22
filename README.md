@@ -1,6 +1,6 @@
 # Republic Networks
 
-This repository contains network configurations for Republic Protocol chains.
+This repository contains network configurations for RepublicAI Protocol chains.
 
 ## Networks
 
