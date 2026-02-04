@@ -6,14 +6,14 @@ This guide shows how to set up monitoring for your RepublicAI validator using Te
 
 - Ubuntu 22.04 or 24.04
 - Running RepublicAI validator node
-- Go 1.21+ (we'll install this)
+- Go 1.23+ (we'll install this if needed)
 
 ## Installation
 
 First, install Go if you don't have it:
 
 ```bash
-GO_VERSION="1.21.6"
+GO_VERSION="1.23.5"
 wget https://go.dev/dl/go${GO_VERSION}.linux-amd64.tar.gz
 sudo rm -rf /usr/local/go
 sudo tar -C /usr/local -xzf go${GO_VERSION}.linux-amd64.tar.gz
@@ -67,7 +67,7 @@ chains:
       alert_if_inactive: yes
       alert_if_no_servers: yes
     nodes:
-      - url: https://rpc
+      - url: https://rpc.xyz
         alert_if_down: yes
       - url: http://localhost:YOUR_RPC_PORT
         alert_if_down: yes
@@ -130,6 +130,8 @@ journalctl -u tenderduty -f
 
 ## Opening the Firewall
 
+⚠️ **Security Note:** Only open port 8888 if you need remote access to the dashboard. For better security, consider using SSH tunneling instead or restricting access to specific IPs.
+
 You need to allow port 8888 for the dashboard:
 
 ```bash
@@ -145,6 +147,14 @@ sudo netfilter-persistent save
 ```
 
 Don't forget to also open port 8888 in your cloud provider's firewall settings (Hetzner, AWS, DigitalOcean, etc).
+
+**Alternative (More Secure):** Use SSH tunneling to access the dashboard without opening the port publicly:
+
+```bash
+ssh -L 8888:localhost:8888 user@YOUR_SERVER_IP
+```
+
+Then access the dashboard at `http://localhost:8888` on your local machine.
 
 ## Accessing the Dashboard
 
@@ -163,9 +173,9 @@ If you want to receive alerts on Telegram when something goes wrong:
 1. Open Telegram and search for @BotFather
 2. Send `/newbot` and follow the instructions to create a bot
 3. Save the bot token you receive
-4. Send any message to your new bot
+4. **Important:** Start a chat with your new bot by sending it any message (like `/start`)
 5. Get your chat ID by visiting: `https://api.telegram.org/bot<YOUR_BOT_TOKEN>/getUpdates`
-6. Look for `"chat":{"id":123456789}` in the response
+6. Look for `"chat":{"id":123456789}` in the response (you need to have sent a message first)
 
 Edit your config:
 
@@ -223,10 +233,7 @@ If you see "Failed to scan chainConfigDirectory" in the logs, that's just a warn
 
 If your validator shows as INACTIVE but you know it's active, double-check that your valoper address in the config is correct.
 
-## Resources
+## Alternative: Penpal
 
-- Tenderduty GitHub: https://github.com/blockpane/tenderduty
-- RepublicAI Discord: https://discord.com/invite/therepublic
-- RepublicAI GitHub: https://github.com/RepublicAI/networks
-
+If you prefer a simpler monitoring solution that just sends alerts to Discord/Telegram without a web dashboard, check out [Penpal](https://github.com/cordtus/penpal) - a lightweight monitoring tool by the RepublicAI team.
 
