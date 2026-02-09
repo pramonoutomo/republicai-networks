@@ -24,4 +24,4 @@ This repository contains network configurations for RepublicAI Protocol chains.
 ## Resources
 
 - [Website](https://republicai.io) - Official website
-- [Discord](https://discord.com/invite/therepublic) - Community chat
+- [Discord](https://discord.com/invite/republicai) - Community chat
